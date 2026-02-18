@@ -1,0 +1,175 @@
+<!DOCTYPE html>		
+<html lang="fa">		
+<head>		
+<meta charset="UTF-8">		
+<title>ماشین حساب کیک قنادی</title>		
+<meta name="viewport" content="width=device-width, initial-scale=1.0">		
+<style>		
+body {		
+font-family: "Tahoma", sans-serif;		
+background: #fef9f0;		
+display: flex;		
+justify-content: center;		
+padding: 20px;		
+}		
+.calculator {		
+background: white;		
+border-radius: 12px;		
+padding: 25px;		
+box-shadow: 0 6px 15px rgba(0,0,0,0.1);		
+width: 100%;		
+max-width: 400px;		
+box-sizing: border-box;		
+}		
+h2 {		
+color: #d35400;		
+text-align: center;		
+margin-bottom: 20px;		
+}		
+.field {		
+display: flex;		
+flex-direction: column;		
+margin-bottom: 15px;		
+}		
+.field label {		
+font-weight: bold;		
+margin-bottom: 5px;		
+}		
+input, select {		
+padding: 10px;		
+border-radius: 6px;		
+border: 1px solid #ccc;		
+font-size: 16px;		
+width: 100%;		
+box-sizing: border-box;		
+}		
+button {		
+width: 100%;		
+padding: 14px;		
+background: #27ae60;		
+color: white;		
+font-size: 18px;		
+font-weight: bold;		
+border: none;		
+border-radius: 6px;		
+cursor: pointer;		
+transition: 0.3s;		
+}		
+button:hover {		
+background: #2ecc71;		
+}		
+#result {		
+margin-top: 25px;		
+font-weight: bold;		
+font-size: 24px;		
+color: #c0392b;		
+text-align: center;		
+}		
+#summary {		
+background: #f8f3e6;		
+padding: 12px 15px;		
+border-radius: 8px;		
+margin-top: 15px;		
+font-size: 16px;		
+color: #34495e;		
+}		
+		
+/* Responsive موبایل */		
+@media (max-width: 480px) {		
+.calculator {		
+padding: 20px;		
+}		
+input, select {		
+font-size: 16px;		
+padding: 10px;		
+}		
+button {		
+font-size: 18px;		
+padding: 14px;		
+}		
+#result {		
+font-size: 22px;		
+}		
+#summary {		
+font-size: 15px;		
+}		
+}		
+</style>		
+</head>		
+<body>		
+<div class="calculator">		
+<h2>ماشین حساب قیمت کیک</h2>		
+		
+<div class="field">		
+<label>وزن کیک (کیلو)</label>		
+<input type="number" id="weight" value="1" min="0.1" step="0.1">		
+</div>		
+		
+<div class="field">		
+<label>فیلینگ</label>		
+<select id="filling">		
+<option value="0">پایه (موز و گردو) صفر</option>		
+<option value="40000">شکلات (نوتلا و گردو) 40,000 تومان/کیلو</option>		
+<option value="70000">شکلات ۲ (کیک مافین نوتلا گردو) 70,000 تومان/کیلو</option>		
+<option value="30000">میوه‌ای (موز گردو آناناس) 30,000 تومان/کیلو</option>		
+</select>		
+</div>		
+		
+<div class="field">		
+<label>روکش فوندانت</label>		
+<select id="cover">		
+<option value="0">خامه (0)</option>		
+<option value="10000">فوندانت ۱ (+10,000 تومان/کیلو)</option>		
+<option value="20000">فوندانت ۲ (+20,000 تومان/کیلو)</option>		
+<option value="30000">فوندانت ۳ (+30,000 تومان/کیلو)</option>		
+<option value="40000">فوندانت حرفه‌ای (+40,000 تومان/کیلو)</option>		
+</select>		
+</div>		
+		
+<div class="field">		
+<label>قیمت پایه (تومان/کیلو)</label>		
+<input type="number" id="basePrice" value="450000" step="5000">		
+</div>		
+		
+<button onclick="calculatePrice()">محاسبه قیمت</button>		
+		
+<div id="summary"></div>		
+<div id="result"></div>		
+</div>		
+		
+<script>		
+function calculatePrice() {		
+// قفل زمانی ساده		
+var now = new Date();		
+var startDate = new Date("2026-02-18T00:00:00");		
+var endDate   = new Date("2026-02-28T23:59:59");		
+		
+if(now < startDate || now > endDate) {		
+alert("⏰ متاسفانه این ماشین حساب هنوز فعال نیست یا زمان استفاده آن به پایان رسیده!");		
+return;		
+}		
+		
+var weight = parseFloat(document.getElementById('weight').value);		
+var basePricePerKg = parseFloat(document.getElementById('basePrice').value);		
+var coverPricePerKg = parseFloat(document.getElementById('cover').value);		
+var fillingPricePerKg = parseFloat(document.getElementById('filling').value);		
+		
+var finalPrice = (basePricePerKg * weight) + (coverPricePerKg * weight) + (fillingPricePerKg * weight);		
+		
+// نمایش جزئیات انتخاب‌ها		
+document.getElementById('summary').innerHTML = `		
+وزن: ${weight} کیلو<br>		
+فیلینگ: ${document.getElementById('filling').selectedOptions[0].text}<br>		
+روکش: ${document.getElementById('cover').selectedOptions[0].text}<br>		
+قیمت پایه: ${basePricePerKg.toLocaleString()} تومان/کیلو		
+`;		
+		
+// پیام تشویقی و قیمت بزرگ		
+document.getElementById('result').innerHTML = `		
+🎉 واقعاً سلیقه عالی داری!<br>		
+قیمت این کیک فوق‌العاده با احترام <span style="font-size:26px; color:#e67e22;">${finalPrice.toLocaleString()} تومان</span>		
+`;		
+}		
+</script>		
+</body>		
+</html>		
